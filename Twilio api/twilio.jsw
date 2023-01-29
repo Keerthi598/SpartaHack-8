@@ -1,0 +1,17 @@
+import twilio from 'twilio';
+import wixSecretsBackend from 'wix-secrets-backend';
+
+export async function sendTextMessage(toPhoneNumber,body){
+    const twilioAccountSid = await wixSecretsBackend.getSecret("twilioAccountSid");
+    const twilioAuthToken = await wixSecretsBackend.getSecret("twilioAuthToken");
+    const twilioPhoneNumber = await wixSecretsBackend.getSecret("twilioPhoneNumber");
+
+    const twilioClient = new twilio(twilioAccountSid, twilioAuthToken);
+    
+    twilioClient.messages.create({
+        "to": toPhoneNumber,
+        "from": twilioPhoneNumber,
+        "body": body
+    }
+    )
+}
